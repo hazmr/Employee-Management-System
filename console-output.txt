@@ -1,0 +1,61 @@
+=== STARTING CONTEXT WITH PROFILE: dev ===
+[LIFECYCLE] InMemoryEmployeeRepository initialised (dev profile)
+[LIFECYCLE] NotificationManager initialised with 3 notifier(s), retryCount=3
+[LIFECYCLE] EmployeeValidator initialised (InitializingBean)
+[LIFECYCLE] EmployeeServiceImpl initialised for Acme Industries, repository in use: InMemoryEmployeeRepository
+
+=== 1. ADD A VALID EMPLOYEE ===
+[LIFECYCLE] new AuditLogger instance created (id=4e6b8301)
+   [AUDIT 4e6b8301] 2026-09-25 19:38:40.161 - employee added: Mona Adel
+   [EMAIL] New employee joined Acme Industries: Mona Adel (Engineering)
+   [SMS] New employee joined Acme Industries: Mona Adel (Engineering)
+   [PUSH] New employee joined Acme Industries: Mona Adel (Engineering)
+[LIFECYCLE] new AuditLogger instance created (id=6136c66e)
+   [AUDIT 6136c66e] 2026-09-25 19:38:40.164 - employee added: Karim Fouad
+   [EMAIL] New employee joined Acme Industries: Karim Fouad (Sales)
+   [SMS] New employee joined Acme Industries: Karim Fouad (Sales)
+   [PUSH] New employee joined Acme Industries: Karim Fouad (Sales)
+
+=== 2. ADD AN INVALID EMPLOYEE ===
+   rejected: employee name must not be blank
+   rejected: salary must not be negative, got -500.0
+
+=== 3. GIVE A RAISE WITHIN THE LIMIT (10%) ===
+[LIFECYCLE] new AuditLogger instance created (id=2a295111)
+   [AUDIT 2a295111] 2026-09-25 19:38:40.166 - raise of 10.0% applied to Mona Adel
+   [EMAIL] Mona Adel received a 10.0% raise: 12000.00 -> 13200.00 EGP
+   [SMS] Mona Adel received a 10.0% raise: 12000.00 -> 13200.00 EGP
+   [PUSH] Mona Adel received a 10.0% raise: 12000.00 -> 13200.00 EGP
+   [SMS] URGENT: payroll must be updated for Mona Adel
+   new salary: 13200.0 EGP
+
+=== 4. GIVE A RAISE OVER THE LIMIT (50%) ===
+   rejected: raise of 50.0% exceeds the company limit of 20.0%
+
+=== 5. SINGLETON VS PROTOTYPE ===
+   same EmployeeService instance twice? true (singleton)
+[LIFECYCLE] new AuditLogger instance created (id=6201796a)
+[LIFECYCLE] new AuditLogger instance created (id=79ee758b)
+[LIFECYCLE] new AuditLogger instance created (id=4b176f30)
+   [AUDIT 6201796a] 2026-09-25 19:38:40.168 - manual audit entry
+   [AUDIT 79ee758b] 2026-09-25 19:38:40.168 - manual audit entry
+   [AUDIT 4b176f30] 2026-09-25 19:38:40.168 - manual audit entry
+   audit logger ids: 6201796a, 79ee758b, 4b176f30
+   same AuditLogger instance twice? false (prototype)
+
+=== 6. ALL EMPLOYEES ===
+   Employee{id=1, name='Mona Adel', department='Engineering', salary=13200.00}
+   Employee{id=2, name='Karim Fouad', department='Sales', salary=9000.00}
+   lookup by id 2: Employee{id=2, name='Karim Fouad', department='Sales', salary=9000.00}
+
+=== 7. EXTERNALISED PROPERTIES ===
+   company.name        = Acme Industries
+   company.currency    = EGP
+   raise.max-percentage= 20.0
+   notification.retry-count= 3
+
+=== 8. CLOSING CONTEXT ===
+[LIFECYCLE] EmployeeServiceImpl destroyed
+[LIFECYCLE] EmployeeValidator destroyed (DisposableBean)
+[LIFECYCLE] NotificationManager destroyed
+[LIFECYCLE] InMemoryEmployeeRepository destroyed, dropping 2 record(s)
